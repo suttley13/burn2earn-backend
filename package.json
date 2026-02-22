@@ -1,0 +1,13 @@
+{
+  "name": "burn2earn-backend",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "@supabase/supabase-js": "^2.47.0",
+    "formidable": "^3.5.2"
+  }
+}
