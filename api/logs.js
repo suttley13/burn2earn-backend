@@ -14,8 +14,12 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'date must be in YYYY-MM-DD format' })
   }
 
-  const startOfDay = `${date}T00:00:00.000Z`
-  const endOfDay = `${date}T23:59:59.999Z`
+  // Day resets at 3am CST (UTC-6), which is 09:00 UTC.
+  // The iOS client sends the logical CST date (already accounting for the 3am cutoff).
+  const startOfDay = `${date}T09:00:00.000Z`
+  const endDate = new Date(startOfDay)
+  endDate.setUTCDate(endDate.getUTCDate() + 1)
+  const endOfDay = endDate.toISOString()
 
   const { data, error } = await supabase
     .from('food_logs')
