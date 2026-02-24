@@ -20,16 +20,18 @@ export default async function handler(req, res) {
 
   const { image, text, userId } = fields
 
-  if (!image) return res.status(400).json({ error: 'image is required' })
   if (!userId) return res.status(400).json({ error: 'userId is required' })
+  if (!image && !text) return res.status(400).json({ error: 'image or text is required' })
 
   // Detect MIME type from base64 prefix or default to jpeg
-  let base64Data = image
+  let base64Data = image || null
   let mimeType = 'image/jpeg'
-  const dataUriMatch = image.match(/^data:(image\/\w+);base64,(.+)$/)
-  if (dataUriMatch) {
-    mimeType = dataUriMatch[1]
-    base64Data = dataUriMatch[2]
+  if (image) {
+    const dataUriMatch = image.match(/^data:(image\/\w+);base64,(.+)$/)
+    if (dataUriMatch) {
+      mimeType = dataUriMatch[1]
+      base64Data = dataUriMatch[2]
+    }
   }
 
   let analysis
